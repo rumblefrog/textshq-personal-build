@@ -41,7 +41,11 @@ npmScopes:
     npmRegistryServer: "https://npm.pkg.github.com"
 EOF
 
-    echo "#!/bin/sh\nyarn $@" > /tmp/bun
+    cat << EOF > /tmp/bun
+#!/bin/sh
+yarn $@
+EOF
+
     sudo mv /tmp/bun /usr/local/bin/bun
     sudo chmod +x /usr/local/bin/bun
 }
