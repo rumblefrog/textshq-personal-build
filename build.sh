@@ -41,7 +41,8 @@ npmScopes:
     npmRegistryServer: "https://npm.pkg.github.com"
 EOF
 
-    sudo cp bin/bun /usr/local/bin/bun
+    echo "#!/bin/sh\nyarn $@" > /tmp/bun
+    sudo mv /tmp/bun /usr/local/bin/bun
     sudo chmod +x /usr/local/bin/bun
 }
 
