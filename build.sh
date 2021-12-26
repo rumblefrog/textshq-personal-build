@@ -43,7 +43,7 @@ EOF
 
     cat << EOF > /tmp/bun
 #!/bin/sh
-yarn $@
+yarn \$@
 EOF
 
     sudo mv /tmp/bun /usr/local/bin/bun
