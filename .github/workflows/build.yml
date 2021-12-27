@@ -12,7 +12,10 @@ jobs:
     timeout-minutes: 80
 
     env:
+      # Warnings are treated as errors if CI is true
       CI: ""
+      # Fixes electron-builder #3179 of EEXIST: file already exists for mac linkage
+      USE_HARD_LINKS: false
       CERT_P12_PATH: "/tmp/textshq.p12"
 
     steps:
@@ -37,5 +40,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: packages
-          path: texts-app-desktop/packaged/
+          path: texts-app-desktop/packaged.tar.gz
 

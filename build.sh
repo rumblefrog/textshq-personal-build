@@ -106,7 +106,7 @@ function package_app() {
 
     rm -rf packaged/mac
 
-    ls packaged
+    tar -zcvf packaged.tar.gz packaged
 }
 
 init
