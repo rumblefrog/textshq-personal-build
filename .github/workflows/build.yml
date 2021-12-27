@@ -12,7 +12,6 @@ jobs:
     timeout-minutes: 60
 
     env:
-      CI: false
       CERT_P12_PATH: "/tmp/textshq.p12"
 
     steps:
@@ -23,6 +22,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+
+      - name: Unset CI env
+        run: unset CI
 
       - name: Store codesigning certificate locally
         run: echo ${{ secrets.CERT_P12 }} | base64 --decode > $CERT_P12_PATH
