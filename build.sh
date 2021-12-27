@@ -88,8 +88,16 @@ function package_app() {
 
     yarn run _ package macos x64
 
+    sleep 5
+
     yarn run _ cross-build macos arm64
+
+    sleep 5
+
     yarn run _ cross-build windows x64
+
+    sleep 5
+
     yarn run _ cross-build linux x64
 
     rm -rf packaged/mac
