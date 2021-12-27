@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 60
 
     env:
+      CI: false
       CERT_P12_PATH: "/tmp/textshq.p12"
 
     steps:

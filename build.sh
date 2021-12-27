@@ -91,6 +91,8 @@ function package_app() {
     yarn run _ cross-build macos arm64
     yarn run _ cross-build windows x64
     yarn run _ cross-build linux x64
+
+    ls packaged
 }
 
 init
@@ -98,3 +100,4 @@ setup_keychain
 setup_packages
 package_app
 
+exit 0
