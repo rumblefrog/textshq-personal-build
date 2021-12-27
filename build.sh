@@ -43,6 +43,7 @@ EOF
 
     cat << EOF > /tmp/bun
 #!/bin/sh
+
 yarn \$@
 EOF
 
@@ -79,7 +80,9 @@ function setup_packages() {
 
     yarn
 
-    yarn run build-macos-binaries
+    # Workaround around https://github.com/yarnpkg/berry/issues/3865
+    ./src/MacTools/build.sh
+    yarn build-swift
 }
 
 function package_app() {
@@ -88,6 +91,7 @@ function package_app() {
 
     yarn run _ package macos x64
 
+    # The sleeps are to try to avoid running into 503 when downloading electron from github
     sleep 5
 
     yarn run _ cross-build macos arm64
