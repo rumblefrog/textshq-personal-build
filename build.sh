@@ -92,6 +92,8 @@ function package_app() {
     yarn run _ cross-build windows x64
     yarn run _ cross-build linux x64
 
+    rm -rf packaged/mac
+
     ls packaged
 }
 
