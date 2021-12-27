@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: macos-11
 
-    timeout-minutes: 120
+    timeout-minutes: 60
 
     env:
       CERT_P12_PATH: "/tmp/textshq.p12"

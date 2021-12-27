@@ -83,16 +83,14 @@ function setup_packages() {
 }
 
 function package_app() {
+    # Generates _ directory for packaging
+    yarn webpack --config webpack.main.config.dev.js
+
     yarn run _ package macos x64
 
     yarn run _ cross-build macos arm64
-    cp -R _cross-build/packaged/* packaged/
-
     yarn run _ cross-build windows x64
-    cp -R _cross-build/packaged/* packaged/
-
     yarn run _ cross-build linux x64
-    cp -R _cross-build/packaged/* packaged/
 }
 
 init
