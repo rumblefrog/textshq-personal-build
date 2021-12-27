@@ -99,5 +99,3 @@ init
 setup_keychain
 setup_packages
 package_app
-
-exit 0
