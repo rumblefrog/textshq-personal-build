@@ -17,6 +17,8 @@ jobs:
       # Fixes electron-builder #3179 of EEXIST: file already exists for mac linkage
       USE_HARD_LINKS: false
       CERT_P12_PATH: "/tmp/textshq.p12"
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      CERT_P12_PASS: ${{ secrets.CERT_P12_PASS }}
 
     steps:
       - name: Checkout repository
@@ -30,11 +32,18 @@ jobs:
       - name: Store codesigning certificate locally
         run: echo ${{ secrets.CERT_P12 }} | base64 --decode > $CERT_P12_PATH
 
-      - name: Build
-        run: ./build.sh
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          CERT_P12_PASS: ${{ secrets.CERT_P12_PASS }}
+      - name: Init packages
+        run: TEXTS_BUILD_STAGE=INIT ./build.sh
+
+      - name: Cache packages node modules
+        id: cache-package-modules
+        uses: actions/cache@v2
+        with:
+          path: packages/*/node_modules
+          key: packages-node-modules
+
+      - name: Build packages
+        run: TEXTS_BUILD_STAGE=BUILD ./build.sh
 
       - name: Upload packages
         uses: actions/upload-artifact@v2

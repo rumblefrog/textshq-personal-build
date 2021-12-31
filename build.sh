@@ -76,7 +76,15 @@ function setup_packages() {
 
     cd texts-app-desktop
 
-    node scripts/first-setup.js --try-build
+    node scripts/first-setup.js --skip-yarn
+
+    cd ..
+}
+
+function build_packages() {
+    cd texts-app-desktop
+
+    node scripts/first-setup.js --skip-cleanup --try-build
 
     yarn
 
@@ -109,7 +117,19 @@ function package_app() {
     tar -zcvf packaged.tar.gz packaged
 }
 
-init
-setup_keychain
-setup_packages
-package_app
+STAGE="${TEXTS_BUILD_STAGE:-ALL}"
+
+if [ $STAGE == "INIT" ]; then
+    init
+    setup_keychain
+    setup_packages
+else if [ $STAGE == "BUILD" ]; then
+    build_packages
+    package_app
+else
+    init
+    setup_keychain
+    setup_packages
+    build_packages
+    package_app
+fi
