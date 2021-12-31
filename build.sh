@@ -22,10 +22,10 @@ if [[ -z "$APPLE_ID" ]]; then
     echo "WARN: APPLE_ID is not set for notorization"
 fi
 
-function init() {
-    export NPGGHA_TOKEN=$GH_TOKEN
-    export YARN_ENABLE_IMMUTABLE_INSTALLS=false
+export NPGGHA_TOKEN=$GH_TOKEN
+export YARN_ENABLE_IMMUTABLE_INSTALLS=false
 
+function init() {
     git config --global url."https://api:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
 
     echo "registry=https://registry.yarnpkg.com/" > ~/.npmrc
