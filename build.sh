@@ -123,7 +123,7 @@ if [ $STAGE == "INIT" ]; then
     init
     setup_keychain
     setup_packages
-else if [ $STAGE == "BUILD" ]; then
+elif [ $STAGE == "BUILD" ]; then
     build_packages
     package_app
 else
