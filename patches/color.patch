@@ -1,0 +1,11 @@
+--- index.js	1984-06-22 17:50:00.000000000 -0400
++++ fixed.js	2022-01-03 18:07:16.000000000 -0500
+@@ -254,7 +254,7 @@
+ 		const lum = [];
+ 		for (const [i, element] of rgb.entries()) {
+ 			const chan = element / 255;
+-			lum[i] = (chan <= 0.039_28) ? chan / 12.92 : ((chan + 0.055) / 1.055) ** 2.4;
++			lum[i] = (chan <= 0.03928) ? chan / 12.92 : ((chan + 0.055) / 1.055) ** 2.4;
+ 		}
+ 
+ 		return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];

@@ -81,8 +81,25 @@ function setup_packages() {
     cd ..
 }
 
+# https://github.com/Qix-/color/issues/233
+function patch_packages() {
+    cd "$GITHUB_WORKSPACE/packages/platform-whatsapp-md/"
+
+    PATCH_PATH=$(yarn patch color --json | jq -r '.path')
+
+    patch -u "$PATCH_PATH/index.js" -i "$GITHUB_WORKSPACE/patches/color.patch"
+
+    yarn patch-commit -s $PATCH_PATH
+}
+
 function build_packages() {
-    cd texts-app-desktop
+    cd "$GITHUB_WORKSPACE/texts-app-desktop"
+
+    node scripts/first-setup.js --skip-cleanup
+
+    patch_packages
+
+    cd "$GITHUB_WORKSPACE/texts-app-desktop"
 
     node scripts/first-setup.js --skip-cleanup --try-build
 
