@@ -22,10 +22,15 @@ if [[ -z "$APPLE_ID" ]]; then
     echo "WARN: APPLE_ID is not set for notorization"
 fi
 
+echo "[TEXTSHQ] GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+echo "[TEXTSHQ] GITHUB_SHA: $GITHUB_SHA"
+
 export NPGGHA_TOKEN=$GH_TOKEN
 export YARN_ENABLE_IMMUTABLE_INSTALLS=false
 
 function init() {
+    echo "[TEXTSHQ] Initializing"
+
     git config --global url."https://api:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
 
     echo "registry=https://registry.yarnpkg.com/" > ~/.npmrc
@@ -52,6 +57,8 @@ EOF
 }
 
 function setup_keychain() {
+    echo "[TEXTSHQ] Setting up keychain"
+
     security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
 
     security list-keychains -d user -s $KEYCHAIN $(security list-keychains -d user | sed s/\"//g)
@@ -72,6 +79,8 @@ function setup_keychain() {
 }
 
 function setup_packages() {
+    echo "[TEXTSHQ] Setting up packages"
+
     git clone --depth 1 https://github.com/TextsHQ/texts-app-desktop
 
     cd texts-app-desktop
@@ -83,6 +92,8 @@ function setup_packages() {
 
 # https://github.com/Qix-/color/issues/233
 function patch_packages() {
+    echo "[TEXTSHQ] Patching packages"
+
     cd "$GITHUB_WORKSPACE/packages/platform-whatsapp-md/"
 
     PATCH_PATH=$(yarn patch color --json | jq -r '.path')
@@ -93,6 +104,8 @@ function patch_packages() {
 }
 
 function build_packages() {
+    echo "[TEXTSHQ] Building packages"
+
     cd "$GITHUB_WORKSPACE/texts-app-desktop"
 
     node scripts/first-setup.js --skip-cleanup
@@ -111,6 +124,8 @@ function build_packages() {
 }
 
 function package_app() {
+    echo "[TEXTSHQ] Packaging app"
+
     # Generates _ directory for packaging
     yarn webpack --config webpack.main.config.dev.js
 
@@ -137,13 +152,19 @@ function package_app() {
 STAGE="${TEXTS_BUILD_STAGE:-ALL}"
 
 if [ $STAGE == "INIT" ]; then
+    echo "[TEXTSHQ] Init stage specified"
+
     init
     setup_keychain
     setup_packages
 elif [ $STAGE == "BUILD" ]; then
+    echo "[TEXTSHQ] Build stage specified"
+
     build_packages
     package_app
 else
+    echo "[TEXTSHQ] Running full build sequence"
+
     init
     setup_keychain
     setup_packages
