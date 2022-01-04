@@ -173,6 +173,3 @@ else
     build_packages
     package_app
 fi
-
-# TEMP
-exit 0
