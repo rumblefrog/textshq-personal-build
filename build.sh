@@ -96,11 +96,13 @@ function patch_packages() {
 
     cd "$GITHUB_WORKSPACE/packages/platform-whatsapp-md/"
 
-    PATCH_PATH=$(yarn patch color --json | jq -r '.path')
+    # This does nothing, doesn't actually patch color in node_modules
+    # PATCH_PATH=$(yarn patch color --json | jq -r '.path')
+    # patch -u "$PATCH_PATH/index.js" -i "$GITHUB_WORKSPACE/patches/color.patch"
 
-    patch -u "$PATCH_PATH/index.js" -i "$GITHUB_WORKSPACE/patches/color.patch"
+    patch -u node_modules/color/index.js -i "$GITHUB_WORKSPACE/patches/color.patch"
 
-    yarn patch-commit -s $PATCH_PATH
+    # yarn patch-commit -s $PATCH_PATH
 }
 
 function build_packages() {
