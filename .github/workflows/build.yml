@@ -4,6 +4,12 @@ on:
   push:
     paths:
       - 'trigger.txt'
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'     
+        required: false
+        default: "false"
 
 jobs:
   build:
@@ -21,6 +27,11 @@ jobs:
       CERT_P12_PASS: ${{ secrets.CERT_P12_PASS }}
 
     steps:
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
