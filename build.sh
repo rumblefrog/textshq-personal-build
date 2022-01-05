@@ -110,13 +110,17 @@ function build_packages() {
 
     cd "$GITHUB_WORKSPACE/texts-app-desktop"
 
-    node scripts/first-setup.js --skip-cleanup
+    if [ $TEXTS_NM_CACHED == "true" ]; then
+        node scripts/first-setup.js --skip-cleanup --skip-yarn
+    else
+        node scripts/first-setup.js --skip-cleanup
+    fi
 
     patch_packages
 
     cd "$GITHUB_WORKSPACE/texts-app-desktop"
 
-    node scripts/first-setup.js --skip-cleanup --try-build
+    node scripts/first-setup.js --skip-cleanup --skip-yarn --try-build
 
     yarn
 
