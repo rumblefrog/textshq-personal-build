@@ -48,7 +48,12 @@ jobs:
           path: packages/*/node_modules
           key: packages-node-modules
 
-      - name: Build packages
+      - name: Build packages (w/ cache)
+        if: steps.cache-package-modules.outputs.cache-hit == 'true'
+        run: TEXTS_BUILD_STAGE=BUILD TEXTS_NM_CACHED=true ./build.sh
+
+      - name: Build packages (w/o cache)
+        if: steps.cache-package-modules.outputs.cache-hit == 'false'
         run: TEXTS_BUILD_STAGE=BUILD ./build.sh
 
       # Enable tmate debugging of manually-triggered workflows if the input option was provided
